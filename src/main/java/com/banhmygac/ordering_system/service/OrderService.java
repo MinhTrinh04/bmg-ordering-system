@@ -3,7 +3,6 @@ package com.banhmygac.ordering_system.service;
 import com.banhmygac.ordering_system.dto.OrderRequest;
 import com.banhmygac.ordering_system.mapper.OrderMapper;
 import com.banhmygac.ordering_system.model.Order;
-import com.banhmygac.ordering_system.model.OrderItem;
 import com.banhmygac.ordering_system.repository.OrderRepository;
 import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;
@@ -16,6 +15,7 @@ import java.math.BigDecimal;
 import java.time.Duration;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import com.banhmygac.ordering_system.exception.RateLimitExceededException;
 
 @Service
 @RequiredArgsConstructor
@@ -25,7 +25,6 @@ public class OrderService {
     private final OrderMapper orderMapper;
     private final SimpMessagingTemplate messagingTemplate;
 
-    // Simple in-memory rate limiting: 1 order per 10 seconds per table
     private final Map<String, Bucket> cache = new ConcurrentHashMap<>();
 
     private Bucket resolveBucket(String tableNumber) {
@@ -39,22 +38,17 @@ public class OrderService {
     }
 
     public Order createOrder(OrderRequest request) {
-        // 1. Rate Limiting Check
         if (!resolveBucket(request.getTableNumber()).tryConsume(1)) {
-            throw new RuntimeException("Too many requests - Please wait a moment");
-        }
+            throw new RateLimitExceededException("Too many requests from table " + request.getTableNumber() + ". Please wait 10 seconds.");        }
 
-        // 2. Map & Calculate Total
         Order order = orderMapper.toEntity(request);
         BigDecimal total = request.getItems().stream()
                 .map(item -> item.getPrice().multiply(BigDecimal.valueOf(item.getQuantity())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         order.setTotalAmount(total);
 
-        // 3. Save to MongoDB
         Order savedOrder = orderRepository.save(order);
 
-        // 4. Notify Kitchen (Real-time)
         messagingTemplate.convertAndSend("/topic/orders", savedOrder);
 
         return savedOrder;
