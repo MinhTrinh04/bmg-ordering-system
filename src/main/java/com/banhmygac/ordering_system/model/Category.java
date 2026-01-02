@@ -5,19 +5,21 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
-import java.util.List;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "menu_categories") // Tên bảng trong Mongo
-public class MenuCategory {
+@Document(collection = "categories")
+public class Category {
     @Id
     private String id;
-    private String name;        // Ví dụ: "Tất cả món ăn"
-    private String slug;        // Ví dụ: "tat-ca-mon-an"
+
+    @Indexed(unique = true) // Đảm bảo slug không trùng nhau
+    private String slug;
+
+    private String name;
     private String description;
-    private List<MenuItem> items;
 }
