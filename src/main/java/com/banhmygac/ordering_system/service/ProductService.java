@@ -2,6 +2,7 @@ package com.banhmygac.ordering_system.service;
 
 import com.banhmygac.ordering_system.dto.ProductRequest;
 import com.banhmygac.ordering_system.dto.ProductResponse;
+import com.banhmygac.ordering_system.exception.DuplicateResourceException;
 import com.banhmygac.ordering_system.exception.ResourceNotFoundException;
 import com.banhmygac.ordering_system.mapper.ProductMapper;
 import com.banhmygac.ordering_system.model.Product;
@@ -35,7 +36,6 @@ public class ProductService {
         return productMapper.toResponse(product);
     }
 
-    // CREATE
     public ProductResponse createProduct(ProductRequest request) {
         if (!categoryRepository.existsById(request.getCategoryId())) {
             throw new ResourceNotFoundException("Category not found");
@@ -43,11 +43,9 @@ public class ProductService {
 
         Product product = productMapper.toEntity(request);
 
-        // Tạo slug từ tên (nếu trùng thì thêm suffix random hoặc xử lý thêm)
         String slug = SlugUtil.makeSlug(request.getName());
-        // Simple check trùng slug (thực tế nên dùng while loop thêm số đếm)
         if (productRepository.existsBySlug(slug)) {
-            slug += "-" + System.currentTimeMillis();
+            throw new DuplicateResourceException("Món ăn với tên '" + request.getName() + "' đã tồn tại (Slug: " + slug + ")");
         }
         product.setSlug(slug);
 
@@ -63,15 +61,12 @@ public class ProductService {
             throw new ResourceNotFoundException("Category not found");
         }
 
-        // Nếu đổi tên thì đổi luôn slug
         if (!product.getName().equals(request.getName())) {
             String newSlug = SlugUtil.makeSlug(request.getName());
-            if (!newSlug.equals(product.getSlug())) {
-                if (productRepository.existsBySlug(newSlug)) {
-                    newSlug += "-" + System.currentTimeMillis();
-                }
-                product.setSlug(newSlug);
+            if (!newSlug.equals(product.getSlug()) && productRepository.existsBySlug(newSlug)) {
+                throw new DuplicateResourceException("Tên món ăn mới '" + request.getName() + "' bị trùng với một món đã có.");
             }
+            product.setSlug(newSlug);
         }
 
         productMapper.updateEntityFromRequest(product, request);

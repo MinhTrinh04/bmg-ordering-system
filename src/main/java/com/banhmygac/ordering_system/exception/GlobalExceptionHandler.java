@@ -20,7 +20,7 @@ public class GlobalExceptionHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-    // 1. Xử lý lỗi Rate Limit (Spam)
+    // Xử lý lỗi Rate Limit (Spam)
     @ExceptionHandler(RateLimitExceededException.class)
     public ResponseEntity<ErrorResponse> handleRateLimitException(RateLimitExceededException ex, HttpServletRequest request) {
         logger.warn("Rate limit exceeded at {}: {}", request.getRequestURI(), ex.getMessage());
@@ -35,7 +35,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.TOO_MANY_REQUESTS);
     }
 
-    // 2. Xử lý lỗi Validate dữ liệu (@Valid trong Controller)
+    // Xử lý lỗi Validate dữ liệu (@Valid trong Controller)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleValidationExceptions(MethodArgumentNotValidException ex, HttpServletRequest request) {
         Map<String, String> errors = new HashMap<>();
@@ -57,7 +57,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
-    // 3. Xử lý lỗi không tìm thấy Resource
+    // Xử lý lỗi không tìm thấy Resource
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleResourceNotFound(ResourceNotFoundException ex, HttpServletRequest request) {
         logger.error("Resource not found at {}: {}", request.getRequestURI(), ex.getMessage());
@@ -70,6 +70,21 @@ public class GlobalExceptionHandler {
                 .path(request.getRequestURI())
                 .build();
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+    }
+
+    // Xử lý lỗi trùng lặp dữ liệu (409 Conflict)
+    @ExceptionHandler(DuplicateResourceException.class)
+    public ResponseEntity<ErrorResponse> handleDuplicateResource(DuplicateResourceException ex, HttpServletRequest request) {
+        logger.warn("Duplicate resource at {}: {}", request.getRequestURI(), ex.getMessage());
+
+        ErrorResponse error = ErrorResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.CONFLICT.value())
+                .error(HttpStatus.CONFLICT.getReasonPhrase())
+                .message(ex.getMessage())
+                .path(request.getRequestURI())
+                .build();
+        return new ResponseEntity<>(error, HttpStatus.CONFLICT);
     }
 
     // 4. Xử lý tất cả các lỗi còn lại (Internal Server Error)
