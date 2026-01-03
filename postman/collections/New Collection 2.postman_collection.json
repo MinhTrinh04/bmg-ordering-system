@@ -1,0 +1,102 @@
+{
+  "info": {
+    "_postman_id": "dfcbdaa1-93fa-4eaf-b295-b56baa7862e1",
+    "name": "Product",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Create prod",
+      "id": "ddfb24f5-9f61-4af4-bd47-83e8bbe3b1d2",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"name\": \"Bánh Mì Test CRUD\",\n    \"price\": 30000,\n    \"description\": \"Ngon bổ rẻ\",\n    \"imageUrl\": \"/img/test.jpg\",\n    \"categoryId\": \"6957f7b61870cecb099702d1\"\n  }",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/products",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "products"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Update prod",
+      "id": "6e358e4b-f809-4d00-b294-cc3f0ed74853",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"name\": \"Bánh Mì Test (Đã sửa)\",\n    \"price\": 35000,\n    \"description\": \"Giá tăng nhẹ\",\n    \"imageUrl\": \"/img/test_new.jpg\",\n    \"categoryId\": \"6957f7b61870cecb099702d1\"\n  }",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/products/6958bbf09b1952d7430876e1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "products",
+            "6958bbf09b1952d7430876e1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Del prod",
+      "id": "89f935c9-b561-451e-bc71-2ccd03cdb424",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/products/6958bbf09b1952d7430876e1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "products",
+            "6958bbf09b1952d7430876e1"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "info": {
+    "_postman_id": "516046a8-7780-4393-b527-6ca6c9af8edf",
+    "name": "Menu",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "New Request",
+      "id": "7ad7bc28-135b-42ad-8e59-79251af734b0",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/menu",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "menu"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
