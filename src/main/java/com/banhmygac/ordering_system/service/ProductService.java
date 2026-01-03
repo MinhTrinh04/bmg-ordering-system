@@ -1,14 +1,19 @@
 package com.banhmygac.ordering_system.service;
 
 import com.banhmygac.ordering_system.dto.ProductRequest;
+import com.banhmygac.ordering_system.dto.ProductResponse;
 import com.banhmygac.ordering_system.exception.ResourceNotFoundException;
+import com.banhmygac.ordering_system.mapper.ProductMapper;
 import com.banhmygac.ordering_system.model.Product;
 import com.banhmygac.ordering_system.repository.CategoryRepository;
 import com.banhmygac.ordering_system.repository.ProductRepository;
+import com.banhmygac.ordering_system.util.SlugUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -16,55 +21,67 @@ public class ProductService {
 
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+    private final ProductMapper productMapper;
 
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    public List<ProductResponse> getAllProducts() {
+        return productRepository.findAll().stream()
+                .map(productMapper::toResponse)
+                .collect(Collectors.toList());
     }
 
-    public Product getProductById(String id) {
-        return productRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + id));
+    public ProductResponse getProductBySlug(String slug) {
+        Product product = productRepository.findBySlug(slug)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found with slug: " + slug));
+        return productMapper.toResponse(product);
     }
 
-    public Product createProduct(ProductRequest request) {
+    // CREATE
+    public ProductResponse createProduct(ProductRequest request) {
         if (!categoryRepository.existsById(request.getCategoryId())) {
-            throw new ResourceNotFoundException("Category not found with id: " + request.getCategoryId());
+            throw new ResourceNotFoundException("Category not found");
         }
 
-        Product product = Product.builder()
-                .name(request.getName())
-                .price(request.getPrice())
-                .currency(request.getCurrency())
-                .description(request.getDescription())
-                .imageUrl(request.getImageUrl())
-                .categoryId(request.getCategoryId())
-                .build();
+        Product product = productMapper.toEntity(request);
 
-        return productRepository.save(product);
+        // Tạo slug từ tên (nếu trùng thì thêm suffix random hoặc xử lý thêm)
+        String slug = SlugUtil.makeSlug(request.getName());
+        // Simple check trùng slug (thực tế nên dùng while loop thêm số đếm)
+        if (productRepository.existsBySlug(slug)) {
+            slug += "-" + System.currentTimeMillis();
+        }
+        product.setSlug(slug);
+
+        return productMapper.toResponse(productRepository.save(product));
     }
 
-
-    public Product updateProduct(String id, ProductRequest request) {
-        Product existingProduct = getProductById(id);
+    @Transactional
+    public ProductResponse updateProduct(String slug, ProductRequest request) {
+        Product product = productRepository.findBySlug(slug)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found with slug: " + slug));
 
         if (!categoryRepository.existsById(request.getCategoryId())) {
-            throw new ResourceNotFoundException("Category not found with id: " + request.getCategoryId());
+            throw new ResourceNotFoundException("Category not found");
         }
 
-        existingProduct.setName(request.getName());
-        existingProduct.setPrice(request.getPrice());
-        existingProduct.setCurrency(request.getCurrency());
-        existingProduct.setDescription(request.getDescription());
-        existingProduct.setImageUrl(request.getImageUrl());
-        existingProduct.setCategoryId(request.getCategoryId());
+        // Nếu đổi tên thì đổi luôn slug
+        if (!product.getName().equals(request.getName())) {
+            String newSlug = SlugUtil.makeSlug(request.getName());
+            if (!newSlug.equals(product.getSlug())) {
+                if (productRepository.existsBySlug(newSlug)) {
+                    newSlug += "-" + System.currentTimeMillis();
+                }
+                product.setSlug(newSlug);
+            }
+        }
 
-        return productRepository.save(existingProduct);
+        productMapper.updateEntityFromRequest(product, request);
+
+        return productMapper.toResponse(productRepository.save(product));
     }
 
-    public void deleteProduct(String id) {
-        if (!productRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Product not found with id: " + id);
-        }
-        productRepository.deleteById(id);
+    public void deleteProduct(String slug) {
+        Product product = productRepository.findBySlug(slug)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
+        productRepository.delete(product);
     }
 }

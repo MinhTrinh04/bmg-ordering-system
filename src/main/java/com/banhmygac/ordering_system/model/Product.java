@@ -17,6 +17,8 @@ import java.math.BigDecimal;
 public class Product {
     @Id
     private String id;
+    @Indexed(unique = true) // Thêm mới slug để sau này fetch theo Path Variable cho đẹp
+    private String slug;
     @Indexed
     private String categoryId;
     private String name;        // Map vs 'title'

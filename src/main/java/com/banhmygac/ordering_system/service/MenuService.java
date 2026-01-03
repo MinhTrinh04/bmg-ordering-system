@@ -1,18 +1,20 @@
 package com.banhmygac.ordering_system.service;
 
+import com.banhmygac.ordering_system.dto.CategoryResponse;
 import com.banhmygac.ordering_system.dto.MenuImportDTO;
-import com.banhmygac.ordering_system.dto.MenuResponse;
+import com.banhmygac.ordering_system.dto.ProductResponse;
+import com.banhmygac.ordering_system.mapper.ProductMapper;
 import com.banhmygac.ordering_system.model.Category;
 import com.banhmygac.ordering_system.model.Product;
 import com.banhmygac.ordering_system.repository.CategoryRepository;
 import com.banhmygac.ordering_system.repository.ProductRepository;
+import com.banhmygac.ordering_system.util.SlugUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,12 +23,22 @@ public class MenuService {
 
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
+    private final ProductMapper productMapper;
 
-    // Chỉ phục vụ việc import data (mock)
     @Transactional
     public String importMenu(MenuImportDTO importData) {
+        productRepository.deleteAll();
+        categoryRepository.deleteAll();
+
+        int importedCount = 0;
+
         for (MenuImportDTO.CategoryDTO catDto : importData.getCategories()) {
-            // 1. Lưu Category
+            // LOGIC QUAN TRỌNG: Bỏ qua category "Tất cả" từ file JSON
+            // Vì chúng ta sẽ tự query lấy món ăn theo từng danh mục nhỏ
+            if ("tat-ca-mon-an".equalsIgnoreCase(catDto.getSlug()) || "Tất cả món ăn".equalsIgnoreCase(catDto.getName())) {
+                continue;
+            }
+
             Category category = Category.builder()
                     .name(catDto.getName())
                     .slug(catDto.getSlug())
@@ -34,37 +46,40 @@ public class MenuService {
                     .build();
             Category savedCat = categoryRepository.save(category);
 
-            // 2. Map Items và gán Category ID
             List<Product> products = catDto.getItems().stream().map(itemDto ->
                     Product.builder()
                             .name(itemDto.getName())
+                            .slug(SlugUtil.makeSlug(itemDto.getName())) // Tự gen slug
                             .price(itemDto.getPrice())
                             .currency(itemDto.getCurrency())
                             .description(itemDto.getDescription())
                             .imageUrl(itemDto.getImageUrl())
-                            .categoryId(savedCat.getId()) // LINK PRODUCT VỚI CATEGORY Ở ĐÂY
+                            .categoryId(savedCat.getId())
                             .build()
             ).collect(Collectors.toList());
 
-            // 3. Lưu danh sách Products
             productRepository.saveAll(products);
+            importedCount++;
         }
 
-        return "Imported successfully with " + importData.getCategories().size() + " categories.";
+        return "Imported successfully " + importedCount + " categories (skipped 'All Products').";
     }
 
-    public List<MenuResponse> getFullMenu() {
+    public List<CategoryResponse> getFullMenu() {
         List<Category> categories = categoryRepository.findAll();
 
         return categories.stream().map(cat -> {
-            List<Product> products = productRepository.findByCategoryId(cat.getId());
+            List<ProductResponse> productDtos = productRepository.findByCategoryId(cat.getId())
+                    .stream()
+                    .map(productMapper::toResponse)
+                    .collect(Collectors.toList());
 
-            return MenuResponse.builder()
+            return CategoryResponse.builder()
                     .id(cat.getId())
                     .name(cat.getName())
                     .slug(cat.getSlug())
                     .description(cat.getDescription())
-                    .items(products)
+                    .items(productDtos)
                     .build();
         }).collect(Collectors.toList());
     }

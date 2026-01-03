@@ -6,6 +6,28 @@
   },
   "item": [
     {
+      "name": "Get prod",
+      "id": "606d503f-46e2-4405-bffc-4ba8b982d4f5",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/products/banh-mi-thap-cam-ha-noi",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "products",
+            "banh-mi-thap-cam-ha-noi"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
       "name": "Create prod",
       "id": "ddfb24f5-9f61-4af4-bd47-83e8bbe3b1d2",
       "request": {
@@ -18,7 +40,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n    \"name\": \"Bánh Mì Test CRUD\",\n    \"price\": 30000,\n    \"description\": \"Ngon bổ rẻ\",\n    \"imageUrl\": \"/img/test.jpg\",\n    \"categoryId\": \"6957f7b61870cecb099702d1\"\n  }",
+          "raw": "{\n    \"name\": \"Bánh Mì Test CRUD\",\n    \"price\": 30000,\n    \"description\": \"Ngon bổ rẻ\",\n    \"imageUrl\": \"/img/test.jpg\",\n    \"categoryId\": \"6958c620d232e628df89f35c\"\n  }",
           "options": {
             "raw": {
               "language": "json"

@@ -1,7 +1,7 @@
 package com.banhmygac.ordering_system.controller;
 
+import com.banhmygac.ordering_system.dto.CategoryResponse;
 import com.banhmygac.ordering_system.dto.MenuImportDTO;
-import com.banhmygac.ordering_system.dto.MenuResponse;
 import com.banhmygac.ordering_system.service.MenuService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +24,7 @@ public class MenuController {
     }
 
     @GetMapping
-    public ResponseEntity<List<MenuResponse>> getMenu() {
+    public ResponseEntity<List<CategoryResponse>> getMenu() {
         return ResponseEntity.ok(menuService.getFullMenu());
     }
 }

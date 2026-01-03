@@ -1,6 +1,7 @@
 package com.banhmygac.ordering_system.controller;
 
 import com.banhmygac.ordering_system.dto.ProductRequest;
+import com.banhmygac.ordering_system.dto.ProductResponse;
 import com.banhmygac.ordering_system.model.Product;
 import com.banhmygac.ordering_system.service.ProductService;
 import jakarta.validation.Valid;
@@ -19,28 +20,28 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping
-    public ResponseEntity<List<Product>> getAllProducts() {
+    public ResponseEntity<List<ProductResponse>> getAllProducts() {
         return ResponseEntity.ok(productService.getAllProducts());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable String id) {
-        return ResponseEntity.ok(productService.getProductById(id));
+    @GetMapping("/{slug}")
+    public ResponseEntity<ProductResponse> getProductBySlug(@PathVariable String slug) {
+        return ResponseEntity.ok(productService.getProductBySlug(slug));
     }
 
     @PostMapping
-    public ResponseEntity<Product> createProduct(@Valid @RequestBody ProductRequest request) {
+    public ResponseEntity<ProductResponse> createProduct(@Valid @RequestBody ProductRequest request) {
         return ResponseEntity.ok(productService.createProduct(request));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Product> updateProduct(@PathVariable String id, @Valid @RequestBody ProductRequest request) {
-        return ResponseEntity.ok(productService.updateProduct(id, request));
+    @PutMapping("/{slug}")
+    public ResponseEntity<ProductResponse> updateProduct(@PathVariable String slug, @Valid @RequestBody ProductRequest request) {
+        return ResponseEntity.ok(productService.updateProduct(slug, request));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable String id) {
-        productService.deleteProduct(id);
+    @DeleteMapping("/{slug}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable String slug) {
+        productService.deleteProduct(slug);
         return ResponseEntity.noContent().build();
     }
 }
