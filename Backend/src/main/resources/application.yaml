@@ -1,0 +1,28 @@
+server:
+  port: ${SERVER_PORT:8080}
+
+spring:
+  application:
+    name: ordering-system
+  main:
+    allow-bean-definition-overriding: true
+  mongodb:
+    uri: ${MONGO_URI:mongodb://localhost:27017/bmg_ordering}
+    database: ${MONGO_DB_NAME:bmg_ordering}
+
+app:
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:*}
+  rate-limit:
+    capacity: ${RATE_LIMIT_CAPACITY:1}
+    refill-tokens: ${RATE_LIMIT_REFILL_TOKENS:1}
+    refill-duration: ${RATE_LIMIT_REFILL_DURATION:10}
+  websocket:
+    endpoint: ${WS_ENDPOINT:/ws-ordering}
+    broker: ${WS_BROKER_PREFIX:/topic}
+    app: ${WS_APP_PREFIX:/app}
+
+logging:
+  level:
+    root: INFO
+    com.banhmygac: DEBUG

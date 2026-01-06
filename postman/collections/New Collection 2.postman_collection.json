@@ -12,7 +12,7 @@
         "method": "GET",
         "header": [],
         "url": {
-          "raw": "http://localhost:8080/api/products/banh-mi-test-da-doi-slug",
+          "raw": "http://localhost:8080/api/products/banh-mi-test-moi",
           "protocol": "http",
           "host": [
             "localhost"
@@ -21,7 +21,7 @@
           "path": [
             "api",
             "products",
-            "banh-mi-test-da-doi-slug"
+            "banh-mi-test-moi"
           ]
         }
       },
@@ -40,7 +40,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n    \"name\": \"Bánh Mì Test đã sửa\",\n    \"price\": 30000,\n    \"description\": \"Ngon bổ rẻ\",\n    \"imageUrl\": \"/img/test.jpg\",\n    \"categoryId\": \"6958c620d232e628df89f35c\"\n  }",
+          "raw": "{\n    \"name\": \"Bánh Mì Test đã sửa\",\n    \"price\": 30000,\n    \"description\": \"Ngon bổ rẻ\",\n    \"imageUrl\": \"/img/test.jpg\",\n    \"categoryId\": \"6958d1bd955408467e2ac372\"\n  }",
           "options": {
             "raw": {
               "language": "json"
@@ -75,7 +75,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n    \"name\": \"Bánh Mì Test Đã sửa\",\n    \"price\": 35000,\n    \"description\": \"Giá tăng nhẹ\",\n    \"imageUrl\": \"/img/test_new.jpg\",\n    \"categoryId\": \"6958c620d232e628df89f35c\"\n  }",
+          "raw": "{\n    \"name\": \"Bánh Mì Test mới\",\n    \"price\": 35000,\n    \"description\": \"Giá tăng nhẹ\",\n    \"imageUrl\": \"/img/test_new.jpg\",\n    \"categoryId\": \"6958d1bd955408467e2ac372\"\n  }",
           "options": {
             "raw": {
               "language": "json"
@@ -83,7 +83,7 @@
           }
         },
         "url": {
-          "raw": "http://localhost:8080/api/products/banh-mi-test-a-sua",
+          "raw": "http://localhost:8080/api/products/banh-mi-test-da-sua",
           "protocol": "http",
           "host": [
             "localhost"
@@ -92,7 +92,7 @@
           "path": [
             "api",
             "products",
-            "banh-mi-test-a-sua"
+            "banh-mi-test-da-sua"
           ]
         }
       },
