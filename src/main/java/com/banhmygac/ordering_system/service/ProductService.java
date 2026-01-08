@@ -1,10 +1,12 @@
 package com.banhmygac.ordering_system.service;
 
+import com.banhmygac.ordering_system.dto.CategoryResponse;
 import com.banhmygac.ordering_system.dto.ProductRequest;
 import com.banhmygac.ordering_system.dto.ProductResponse;
 import com.banhmygac.ordering_system.exception.DuplicateResourceException;
 import com.banhmygac.ordering_system.exception.ResourceNotFoundException;
 import com.banhmygac.ordering_system.mapper.ProductMapper;
+import com.banhmygac.ordering_system.model.Category;
 import com.banhmygac.ordering_system.model.Product;
 import com.banhmygac.ordering_system.repository.CategoryRepository;
 import com.banhmygac.ordering_system.repository.ProductRepository;
@@ -24,10 +26,24 @@ public class ProductService {
     private final CategoryRepository categoryRepository;
     private final ProductMapper productMapper;
 
-    public List<ProductResponse> getAllProducts() {
-        return productRepository.findAll().stream()
-                .map(productMapper::toResponse)
-                .collect(Collectors.toList());
+    public List<CategoryResponse> getAllProductsAsTree() {
+        List<Category> categories = categoryRepository.findAll();
+        List<Product> allProducts = productRepository.findAll();
+
+        return categories.stream().map(cat -> {
+            List<ProductResponse> items = allProducts.stream()
+                    .filter(p -> p.getCategoryId().equals(cat.getId()))
+                    .map(productMapper::toResponse)
+                    .collect(Collectors.toList());
+
+            return CategoryResponse.builder()
+                    .id(cat.getId())
+                    .name(cat.getName())
+                    .slug(cat.getSlug())
+                    .description(cat.getDescription())
+                    .items(items)
+                    .build();
+        }).collect(Collectors.toList());
     }
 
     public ProductResponse getProductBySlug(String slug) {

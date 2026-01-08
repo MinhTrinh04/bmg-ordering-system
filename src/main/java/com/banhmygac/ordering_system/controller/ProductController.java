@@ -1,5 +1,6 @@
 package com.banhmygac.ordering_system.controller;
 
+import com.banhmygac.ordering_system.dto.CategoryResponse;
 import com.banhmygac.ordering_system.dto.ProductRequest;
 import com.banhmygac.ordering_system.dto.ProductResponse;
 import com.banhmygac.ordering_system.model.Product;
@@ -19,8 +20,8 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping
-    public ResponseEntity<List<ProductResponse>> getAllProducts() {
-        return ResponseEntity.ok(productService.getAllProducts());
+    public ResponseEntity<List<CategoryResponse>> getAllProducts() {
+        return ResponseEntity.ok(productService.getAllProductsAsTree());
     }
 
     @GetMapping("/{slug}")

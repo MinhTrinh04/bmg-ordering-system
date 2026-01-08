@@ -1,6 +1,5 @@
 package com.banhmygac.ordering_system.service;
 
-import com.banhmygac.ordering_system.dto.CategoryResponse;
 import com.banhmygac.ordering_system.dto.MenuImportDTO;
 import com.banhmygac.ordering_system.dto.ProductResponse;
 import com.banhmygac.ordering_system.mapper.ProductMapper;
@@ -13,13 +12,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class MenuService {
+public class DataSeedService {
 
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
@@ -63,24 +61,5 @@ public class MenuService {
         }
 
         return "Imported successfully " + importedCount + " categories (skipped 'All Products').";
-    }
-
-    public List<CategoryResponse> getFullMenu() {
-        List<Category> categories = categoryRepository.findAll();
-
-        return categories.stream().map(cat -> {
-            List<ProductResponse> productDtos = productRepository.findByCategoryId(cat.getId())
-                    .stream()
-                    .map(productMapper::toResponse)
-                    .collect(Collectors.toList());
-
-            return CategoryResponse.builder()
-                    .id(cat.getId())
-                    .name(cat.getName())
-                    .slug(cat.getSlug())
-                    .description(cat.getDescription())
-                    .items(productDtos)
-                    .build();
-        }).collect(Collectors.toList());
     }
 }
