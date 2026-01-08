@@ -1,0 +1,170 @@
+{
+  "info": {
+    "_postman_id": "56020d0e-6ee8-4a1b-969a-a79ef73415e9",
+    "name": "Admin",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Session PAYING",
+      "id": "c8f7e617-eaa8-4327-b1a0-e8c0c9f97123",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/admin/sessions",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "admin",
+            "sessions"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Session CLOSED",
+      "id": "cdac3bd8-a0ca-4cdf-a6f6-cbd377af4115",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/admin/sessions/TB05/close",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "admin",
+            "sessions",
+            "TB05",
+            "close"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get order",
+      "id": "f6c3ca68-1a37-48c9-9af0-5a1df5516ffb",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/orders/TB05",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "orders",
+            "TB05"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Batch IN_PROGRESS",
+      "id": "32af8225-26a9-442a-877e-69340d11022e",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/admin/batches/6cdd6ab5-e556-417f-86a2-a9ab128e9c2a/status?status=IN_PROGRESS",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "admin",
+            "batches",
+            "6cdd6ab5-e556-417f-86a2-a9ab128e9c2a",
+            "status"
+          ],
+          "query": [
+            {
+              "key": "status",
+              "value": "IN_PROGRESS",
+              "uuid": "276c500c-9502-4788-ab2d-2a08af8c12c1"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Batch COMPLETED",
+      "id": "2e1931a1-1c79-493b-8430-e4464595c1cb",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/admin/batches/6cdd6ab5-e556-417f-86a2-a9ab128e9c2a/status?status=COMPLETED",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "admin",
+            "batches",
+            "6cdd6ab5-e556-417f-86a2-a9ab128e9c2a",
+            "status"
+          ],
+          "query": [
+            {
+              "key": "status",
+              "value": "COMPLETED",
+              "uuid": "1f1a99c9-a196-43a2-ba64-2855f82cbb16"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Batch CANCELLED",
+      "id": "1303798a-427c-457e-bdc5-1f02b26d1a6a",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/admin/batches/e69d0d78-f688-4914-aba8-612fbc55fcdc/status?status=CANCELLED",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "admin",
+            "batches",
+            "e69d0d78-f688-4914-aba8-612fbc55fcdc",
+            "status"
+          ],
+          "query": [
+            {
+              "key": "status",
+              "value": "CANCELLED",
+              "uuid": "3594c003-3ab5-4f65-8d98-a2fa5e1350d9"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
