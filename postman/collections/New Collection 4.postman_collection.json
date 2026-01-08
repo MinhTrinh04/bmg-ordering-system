@@ -142,7 +142,7 @@
         "method": "PUT",
         "header": [],
         "url": {
-          "raw": "http://localhost:8080/api/admin/batches/66829b00-2163-4c59-a3cf-7afd334af7c8/status?status=CANCELLED",
+          "raw": "http://localhost:8080/api/admin/batches/e69d0d78-f688-4914-aba8-612fbc55fcdc/status?status=CANCELLED",
           "protocol": "http",
           "host": [
             "localhost"
@@ -152,7 +152,7 @@
             "api",
             "admin",
             "batches",
-            "66829b00-2163-4c59-a3cf-7afd334af7c8",
+            "e69d0d78-f688-4914-aba8-612fbc55fcdc",
             "status"
           ],
           "query": [

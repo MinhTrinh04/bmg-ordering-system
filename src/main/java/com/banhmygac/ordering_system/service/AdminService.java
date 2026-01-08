@@ -2,19 +2,20 @@ package com.banhmygac.ordering_system.service;
 
 import com.banhmygac.ordering_system.exception.ResourceNotFoundException;
 import com.banhmygac.ordering_system.model.DiningSession;
+import com.banhmygac.ordering_system.model.OrderBatch;
 import com.banhmygac.ordering_system.model.OrderStatus;
 import com.banhmygac.ordering_system.model.SessionStatus;
 import com.banhmygac.ordering_system.repository.DiningSessionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
 
@@ -44,41 +45,46 @@ public class AdminService {
         session.setUpdatedAt(Instant.now());
         sessionRepository.save(session);
 
-        // Bắn socket báo bàn này đã trống (Clear màn hình khách)
         messagingTemplate.convertAndSend(brokerPrefix + "/table/" + tableNumber, session);
-
-        // Bắn socket báo cho Admin/Bếp biết bàn này đã đóng (để xóa khỏi list)
         messagingTemplate.convertAndSend(brokerPrefix + "/admin/sessions", session);
     }
 
-    // 3. Bếp cập nhật trạng thái Batch (Đã nâng cấp)
+    @Transactional
     public void updateBatchStatus(String batchId, OrderStatus newStatus) {
-        // Tìm đúng Session chứa batchId này
         Query query = new Query(Criteria.where("batches.id").is(batchId));
+        DiningSession session = mongoTemplate.findOne(query, DiningSession.class);
 
-        // Update trạng thái status của phần tử mảng tìm được (batches.$)
-        Update update = new Update()
-                .set("batches.$.status", newStatus)
-                .set("updatedAt", Instant.now());
-
-        // Thực hiện update và trả về object sau khi update (returnNew = true)
-        DiningSession updatedSession = mongoTemplate.findAndModify(
-                query,
-                update,
-                new FindAndModifyOptions().returnNew(true),
-                DiningSession.class
-        );
-
-        if (updatedSession != null) {
-            // QUAN TRỌNG: Bắn tin hiệu Real-time
-
-            // 1. Báo cho Khách hàng (để điện thoại khách hiện: "Đang nấu" -> "Đã xong")
-            messagingTemplate.convertAndSend(brokerPrefix + "/table/" + updatedSession.getTableNumber(), updatedSession);
-
-            // 2. Báo cập nhật cho Dashboard quản lý (nếu có nhiều màn hình bếp cùng xem)
-            messagingTemplate.convertAndSend(brokerPrefix + "/admin/update", updatedSession);
-        } else {
-            throw new ResourceNotFoundException("Order Batch not found with id: " + batchId);
+        if (session == null) {
+            throw new ResourceNotFoundException("Session not found for batch id: " + batchId);
         }
+
+        boolean isUpdated = false;
+        BigDecimal newTotal = BigDecimal.ZERO;
+
+        for (OrderBatch batch : session.getBatches()) {
+            if (batch.getId().equals(batchId)) {
+                batch.setStatus(newStatus);
+                isUpdated = true;
+            }
+
+            if (batch.getStatus() != OrderStatus.CANCELLED) {
+                BigDecimal batchTotal = batch.getItems().stream()
+                        .map(item -> item.getPrice().multiply(BigDecimal.valueOf(item.getQuantity())))
+                        .reduce(BigDecimal.ZERO, BigDecimal::add);
+                newTotal = newTotal.add(batchTotal);
+            }
+        }
+
+        if (!isUpdated) {
+            throw new ResourceNotFoundException("Batch ID found in query but missing in list logic");
+        }
+
+        session.setTotalAmount(newTotal);
+        session.setUpdatedAt(Instant.now());
+
+        sessionRepository.save(session);
+
+        messagingTemplate.convertAndSend(brokerPrefix + "/table/" + session.getTableNumber(), session);
+        messagingTemplate.convertAndSend(brokerPrefix + "/admin/update", session);
     }
 }
