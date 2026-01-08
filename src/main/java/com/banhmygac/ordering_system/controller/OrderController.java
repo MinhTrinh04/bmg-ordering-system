@@ -28,4 +28,9 @@ public class OrderController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @PostMapping("/{tableNumber}/checkout")
+    public ResponseEntity<DiningSession> checkout(@PathVariable String tableNumber) {
+        return ResponseEntity.ok(orderService.requestCheckout(tableNumber));
+    }
 }

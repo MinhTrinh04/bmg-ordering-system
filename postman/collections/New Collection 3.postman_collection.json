@@ -74,6 +74,29 @@
         }
       },
       "response": []
+    },
+    {
+      "name": "Checkout",
+      "id": "275d22d3-087e-4d28-a406-9509efa8b0db",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/orders/TB05/checkout",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "orders",
+            "TB05",
+            "checkout"
+          ]
+        }
+      },
+      "response": []
     }
   ]
 }

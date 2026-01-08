@@ -79,6 +79,19 @@ public class OrderService {
         return savedSession;
     }
 
+    public DiningSession requestCheckout(String tableNumber) {
+        DiningSession session = getSessionByTable(tableNumber);
+
+        session.setStatus(SessionStatus.PAYING);
+        session.setUpdatedAt(Instant.now());
+
+        DiningSession savedSession = sessionRepository.save(session);
+
+        messagingTemplate.convertAndSend(brokerPrefix + "/admin/checkout", savedSession);
+
+        return savedSession;
+    }
+
     private DiningSession createNewSession(String tableNumber) {
         return DiningSession.builder()
                 .tableNumber(tableNumber)
