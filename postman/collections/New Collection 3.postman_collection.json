@@ -1,0 +1,79 @@
+{
+  "info": {
+    "_postman_id": "21843c38-5520-4066-84b7-d6f4036437d4",
+    "name": "OrderV2",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1st order",
+      "id": "bfe40665-b575-4ef7-8478-5946cb616eed",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"tableNumber\": \"TB05\",\n    \"items\": [\n      {\n        \"productId\": \"p-001\",\n        \"productName\": \"Phở Bò Đặc Biệt\",\n        \"quantity\": 2,\n        \"price\": 50000\n      }\n    ]\n  }",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/orders",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "orders"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "2nd order",
+      "id": "318cd2e0-4c8c-417d-86cd-2f419bc455ff",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"tableNumber\": \"TB05\",\n    \"items\": [\n      {\n        \"productId\": \"d-001\",\n        \"productName\": \"Bia Hà Nội\",\n        \"quantity\": 1,\n        \"price\": 20000\n      }\n    ]\n  }",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/orders",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "orders"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
