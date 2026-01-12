@@ -11,6 +11,7 @@ import "./step.css";
 /// Layout
 import Nav from "./layouts/nav";
 import Footer from "./layouts/Footer";
+import { BottomNav } from "./components/common";
 
 import ScrollToTop from "./layouts/ScrollToTop";
 
@@ -69,6 +70,7 @@ function MainLayout() {
         </div>
       </div>
       <Footer />
+      <BottomNav cartItemCount={0} />
     </div>
   )
 
