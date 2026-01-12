@@ -49,6 +49,7 @@ ui/admin/.env.production.local
 
 # Guest UI
 ui/guest/node_modules/
+ui/guest/package-lock.json
 ui/guest/dist/
 ui/guest/.next/
 ui/guest/build/
