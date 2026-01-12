@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 const MsgBox = ({ avatar1, avatar2, openMsg, PerfectScrollbar, offMsg }) => {
    const [toggle, setToggle] = useState(false);
    return (
@@ -77,9 +77,8 @@ const MsgBox = ({ avatar1, avatar2, openMsg, PerfectScrollbar, offMsg }) => {
                   </svg>
                </Link>
                <ul
-                  className={`dropdown-menu dropdown-menu-right ${
-                     toggle ? "show" : ""
-                  }`}
+                  className={`dropdown-menu dropdown-menu-right ${toggle ? "show" : ""
+                     }`}
                >
                   <li
                      className="dropdown-item"
@@ -111,10 +110,9 @@ const MsgBox = ({ avatar1, avatar2, openMsg, PerfectScrollbar, offMsg }) => {
                </ul>
             </div>
          </div>
-         <PerfectScrollbar
-            className={`card-body msg_card_body dlab-scroll ${
-               openMsg ? "ps ps--active-y" : ""
-            } `}
+         <div style={{ overflowY: 'auto', maxHeight: '400px' }}
+            className={`card-body msg_card_body dlab-scroll ${openMsg ? "ps ps--active-y" : ""
+               } `}
             id="DZ_W_Contacts_Body3"
          >
             <div className="d-flex justify-content-start mb-4">
@@ -299,7 +297,7 @@ const MsgBox = ({ avatar1, avatar2, openMsg, PerfectScrollbar, offMsg }) => {
                   <span className="msg_time">9:12 AM, Today</span>
                </div>
             </div>
-         </PerfectScrollbar>
+         </div>
          <div className="card-footer type_msg">
             <div className="input-group">
                <textarea
@@ -318,3 +316,4 @@ const MsgBox = ({ avatar1, avatar2, openMsg, PerfectScrollbar, offMsg }) => {
 };
 
 export default MsgBox;
+

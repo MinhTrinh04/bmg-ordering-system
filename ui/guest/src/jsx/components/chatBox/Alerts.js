@@ -1,11 +1,10 @@
 import React from "react";
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 const Alerts = ({ toggleTab, PerfectScrollbar, toggleChatBox }) => {
    return (
       <div
-         className={`tab-pane fade  ${
-            toggleTab === "alerts" ? "active show" : ""
-         }`}
+         className={`tab-pane fade  ${toggleTab === "alerts" ? "active show" : ""
+            }`}
          id="alerts"
          role="tabpanel"
       >
@@ -68,10 +67,9 @@ const Alerts = ({ toggleTab, PerfectScrollbar, toggleChatBox }) => {
                   </svg>
                </Link>
             </div>
-            <PerfectScrollbar
-               className={`card-body contacts_body p-0 dlab-scroll  ${
-                  toggleChatBox ? "ps ps--active-y" : ""
-               }`}
+            <div style={{ overflowY: 'auto', maxHeight: '400px' }}
+               className={`card-body contacts_body p-0 dlab-scroll  ${toggleChatBox ? "ps ps--active-y" : ""
+                  }`}
                id="DZ_W_Contacts_Body1"
             >
                <ul className="contacts">
@@ -121,7 +119,7 @@ const Alerts = ({ toggleTab, PerfectScrollbar, toggleChatBox }) => {
                      </div>
                   </li>
                </ul>
-            </PerfectScrollbar>
+            </div>
             <div className="card-footer"></div>
          </div>
       </div>
@@ -129,3 +127,4 @@ const Alerts = ({ toggleTab, PerfectScrollbar, toggleChatBox }) => {
 };
 
 export default Alerts;
+

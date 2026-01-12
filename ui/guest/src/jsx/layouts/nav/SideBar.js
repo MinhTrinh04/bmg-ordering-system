@@ -1,10 +1,7 @@
 /// Menu
 import React, { Component, useContext, useEffect, useReducer, useState } from "react";
 
-/// Scroll
-import PerfectScrollbar from "react-perfect-scrollbar";
 import Collapse from 'react-bootstrap/Collapse';
-import Button from 'react-bootstrap/Button';
 
 /// Link
 import { Link, NavLink } from "react-router-dom";
@@ -85,7 +82,7 @@ const SideBar = () => {
     <div
       className="dlabnav border-right"
     >
-      <PerfectScrollbar className="dlabnav-scroll">
+      <div className="dlabnav-scroll" style={{ overflowY: 'auto', maxHeight: '100vh' }}>
         <ul className="metismenu" id="menu">
           <li className="menu-title"> Main Menu</li>
           {MenuList.map((data, index) => {
@@ -171,7 +168,7 @@ const SideBar = () => {
             <span className="heart" onClick={() => heartBlast()}></span> by DexignLab
           </p>
         </div>
-      </PerfectScrollbar>
+      </div>
     </div>
   );
 };
