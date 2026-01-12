@@ -37,23 +37,12 @@ backend/build/
 backend/.env
 
 # UI specific ignores (for future)
-# Admin UI
-ui/admin/node_modules/
-ui/admin/dist/
-ui/admin/.next/
-ui/admin/build/
-ui/admin/.env.local
-ui/admin/.env.development.local
-ui/admin/.env.test.local
-ui/admin/.env.production.local
-
-# Guest UI
-ui/guest/node_modules/
-ui/guest/package-lock.json
-ui/guest/dist/
-ui/guest/.next/
-ui/guest/build/
-ui/guest/.env.local
-ui/guest/.env.development.local
-ui/guest/.env.test.local
-ui/guest/.env.production.local
+ui/node_modules/
+ui/dist/
+ui/.next/
+ui/build/
+ui/.env.local
+ui/.env.development.local
+ui/.env.test.local
+ui/.env.production.local
+ui/package-lock.json
