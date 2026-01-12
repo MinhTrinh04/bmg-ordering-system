@@ -18,9 +18,8 @@ const Chat = ({ PerfectScrollbar, toggleChatBox, toggleTab }) => {
       role='tabpanel'
     >
       <div
-        className={`card mb-sm-3 mb-md-0 contacts_card dlab-chat-user-box ${
-          openMsg ? 'd-none' : ''
-        }`}
+        className={`card mb-sm-3 mb-md-0 contacts_card dlab-chat-user-box ${openMsg ? 'd-none' : ''
+          }`}
       >
         <div className='card-header chat-list-header text-center'>
           <Link to='#'>
@@ -76,11 +75,11 @@ const Chat = ({ PerfectScrollbar, toggleChatBox, toggleTab }) => {
             </svg>
           </Link>
         </div>
-        <PerfectScrollbar
-          className={`card-body contacts_body p-0 dlab-scroll  ${
-            toggleChatBox ? 'ps ps--active-y' : ''
-          }`}
+        <div
+          className={`card-body contacts_body p-0 dlab-scroll  ${toggleChatBox ? 'ps ps--active-y' : ''
+            }`}
           id='DZ_W_Contacts_Body'
+          style={{ overflowY: 'auto', maxHeight: '400px' }}
         >
           <ul className='contacts'>
             <li className='name-first-letter'>A</li>
@@ -332,7 +331,7 @@ const Chat = ({ PerfectScrollbar, toggleChatBox, toggleTab }) => {
               </div>
             </li>
           </ul>
-        </PerfectScrollbar>
+        </div>
       </div>
       <MsgBox
         avatar1={avatar1}

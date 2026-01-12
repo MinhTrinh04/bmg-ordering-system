@@ -1,27 +1,8 @@
-export const addTodo = (data) => {
-	return{
-		type: "ADD_TODO",
-		payload: {
-			id: new Date().getTime(),
-			data:data,
-		},
-	}
-}
-export const deleteTodo = (id) => {
-	return{
-		type: "DELETE_TODO",
-		id
-	}
-}
-export const removeTodo = () => {
-	return{
-		type: "REMOVE_TODO"
-	}
-}
+// Action exports will be added here when new actions are created
+// Example:
+// export * from './menuActions';
+// export * from './cartActions';
+// export * from './orderActions';
+// export * from './tableActions';
 
-/* export const editTodo = (id) =>{
-    return{
-        type: "EDIT_TODO",
-        id
-    }
-} */
+export default {};

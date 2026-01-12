@@ -70,10 +70,9 @@ const Notes = ({ toggleTab, PerfectScrollbar, toggleChatBox }) => {
             </svg>
           </Link>
         </div>
-        <PerfectScrollbar
-          className={`card-body contacts_body p-0 dlab-scroll  ${
-            toggleChatBox ? 'ps ps--active-y' : ''
-          }`}
+        <div style={{ overflowY: 'auto', maxHeight: '400px' }}
+          className={`card-body contacts_body p-0 dlab-scroll  ${toggleChatBox ? 'ps ps--active-y' : ''
+            }`}
           id='DZ_W_Contacts_Body2'
         >
           <ul className='contacts'>
@@ -142,10 +141,11 @@ const Notes = ({ toggleTab, PerfectScrollbar, toggleChatBox }) => {
               </div>
             </li>
           </ul>
-        </PerfectScrollbar>
+        </div>
       </div>
     </div>
   )
 }
 
 export default Notes
+

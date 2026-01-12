@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 
-/// Scroll
-import PerfectScrollbar from "react-perfect-scrollbar";
+
 
 /// Components
 import Notes from "../components/chatBox/Notes";
@@ -28,11 +27,10 @@ const ChatBox = ({ onClick, toggle }) => {
                {dataToggle.map((data, i) => (
                   <li className="nav-item" key={i}>
                      <Link
-                        className={`nav-link ${
-                           toggleTab === data.name.toLocaleLowerCase()
+                        className={`nav-link ${toggleTab === data.name.toLocaleLowerCase()
                               ? "active"
                               : ""
-                        }`}
+                           }`}
                         to="#"
                         data-toggle="tab"
                         href={data.href}
@@ -47,17 +45,17 @@ const ChatBox = ({ onClick, toggle }) => {
             </ul>
             <div className="tab-content">
                <Chat
-                  PerfectScrollbar={PerfectScrollbar}
+                  PerfectScrollbar={null}
                   toggle={toggle}
                   toggleTab={toggleTab}
                />
                <Notes
-                  PerfectScrollbar={PerfectScrollbar}
+                  PerfectScrollbar={null}
                   toggle={toggle}
                   toggleTab={toggleTab}
                />
                <Alerts
-                  PerfectScrollbar={PerfectScrollbar}
+                  PerfectScrollbar={null}
                   toggle={toggle}
                   toggleTab={toggleTab}
                />
