@@ -1,33 +1,58 @@
-HELP.md
-target/
-.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+# Backend specific ignores
+backend/HELP.md
+backend/target/
+backend/.mvn/wrapper/maven-wrapper.jar
+!backend/src/main/**/target/
+!backend/src/test/**/target/
 
 ### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
+backend/.apt_generated
+backend/.classpath
+backend/.factorypath
+backend/.project
+backend/.settings
+backend/.springBeans
+backend/.sts4-cache
 
 ### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
+backend/.idea
+backend/*.iws
+backend/*.iml
+backend/*.ipr
 
 ### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
+backend/nbproject/private/
+backend/nbbuild/
+backend/dist/
+backend/nbdist/
+backend/.nb-gradle/
+backend/build/
+!backend/src/main/**/build/
+!backend/src/test/**/build/
 
 ### VS Code ###
 .vscode/
+
+# Environment files
+backend/.env
+
+# UI specific ignores (for future)
+# Admin UI
+ui/admin/node_modules/
+ui/admin/dist/
+ui/admin/.next/
+ui/admin/build/
+ui/admin/.env.local
+ui/admin/.env.development.local
+ui/admin/.env.test.local
+ui/admin/.env.production.local
+
+# Guest UI
+ui/guest/node_modules/
+ui/guest/dist/
+ui/guest/.next/
+ui/guest/build/
+ui/guest/.env.local
+ui/guest/.env.development.local
+ui/guest/.env.test.local
+ui/guest/.env.production.local
